@@ -6,4 +6,5 @@ export interface Bindings {
   TELEGRAM_BOT_TOKEN: string;
   TELEGRAM_CHANNEL_ID: string;
   RSS_STORAGE: KVNamespace;
+  PUBLISH_LAST_ENDPOINT: string;
 }

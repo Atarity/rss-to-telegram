@@ -1,3 +1,15 @@
+# Reworked layout
+- Fill in `devcontainer.env`
+- Fill in KV storage ID in wrangler.toml
+   ```
+   npx wrangler secret put RSS_FEED_URL
+   npx wrangler secret put TELEGRAM_BOT_TOKEN
+   npx wrangler secret put TELEGRAM_CHANNEL_ID
+   npx wrangler secret put PUBLISH_LAST_ENDPOINT (true/false)
+   ```
+
+below is the original docs ↓
+
 # 📰 RSS to Telegram 🚀
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
