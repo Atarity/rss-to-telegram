@@ -77,10 +77,10 @@ export function cleanHtmlForTelegram(html: string, articleUrl: string): string {
 
         // Add double newline before the last link paragraph
         if (isLastLinkParagraph) {
-            return '\n\n' + processed.trim();
+            return processed.trim();
         }
 
-        return processed.trim();
+        return processed.trim() + '\n\n';
     });
 
     // Log the processed paragraphs before joining
