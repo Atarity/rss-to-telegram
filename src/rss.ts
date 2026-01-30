@@ -62,9 +62,9 @@ export async function getLatestRssItems(
     // Get current time and 24 hours ago time point
     const now = new Date();
     const twentyFourHoursAgo = new Date(now);
-    twentyFourHoursAgo.setHours(now.getHours() - 24);
+    twentyFourHoursAgo.setHours(now.getHours() - 168);
 
-    console.log(`Filtering items within 24 hours, current time: ${now.toISOString()}`);
+    console.log(`Filtering items within 168 hours (7 days), current time: ${now.toISOString()}`);
 
     // Sort by publication date, newest first
     const sortedItems = feed.items
