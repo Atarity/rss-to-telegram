@@ -1,2 +1,1 @@
-FROM node:lts-alpine3.21
-RUN apk add git openssh
+FROM mcr.microsoft.com/devcontainers/javascript-node:22-bookworm

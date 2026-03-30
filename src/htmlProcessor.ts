@@ -96,4 +96,82 @@ export function cleanHtmlForTelegram(html: string, articleUrl: string): string {
     //console.log('Final cleaned HTML:', JSON.stringify(result, null, 2));
 
     return result;
-}
+    }
+
+    /**
+    * Truncate HTML content by visible character count
+    * - Preserves HTML tags
+    * - Closes any open tags if truncated
+    * - Appends '...' if truncated
+    * - Tries to truncate at space boundaries
+    */
+    export function truncateHtml(html: string, maxVisibleLength: number): string {
+    if (html.length <= maxVisibleLength) return html;
+
+    let visibleCount = 0;
+    let result = '';
+    let i = 0;
+    const tagStack: string[] = [];
+    let lastSpaceIndex = -1;
+    let lastSpaceVisibleCount = -1;
+    let lastSpaceTagStack: string[] = [];
+
+    while (i < html.length && visibleCount < maxVisibleLength) {
+        if (html[i] === '<') {
+            const closingBracket = html.indexOf('>', i);
+            if (closingBracket !== -1) {
+                const tag = html.substring(i, closingBracket + 1);
+                result += tag;
+
+                // Track tags to close them later
+                const tagNameMatch = tag.match(/^<\/?([a-z1-6]+)/i);
+                if (tagNameMatch) {
+                    const tagName = tagNameMatch[1].toLowerCase();
+                    if (tag.startsWith('</')) {
+                        if (tagStack.length > 0 && tagStack[tagStack.length - 1] === tagName) {
+                            tagStack.pop();
+                        }
+                    } else if (!tag.endsWith('/>')) {
+                        tagStack.push(tagName);
+                    }
+                }
+
+                i = closingBracket + 1;
+                continue;
+            }
+        }
+
+        if (html[i] === ' ') {
+            lastSpaceIndex = result.length;
+            lastSpaceVisibleCount = visibleCount;
+            lastSpaceTagStack = [...tagStack];
+        }
+
+        result += html[i];
+        visibleCount++;
+        i++;
+    }
+
+    if (i < html.length) {
+        // If we're in the middle of a word and found a space earlier, truncate at the last space
+        if (html[i] !== ' ' && lastSpaceIndex !== -1) {
+            result = result.substring(0, lastSpaceIndex);
+            // Use the tag stack from the time of the last space
+            while (tagStack.length > lastSpaceTagStack.length) {
+                tagStack.pop();
+            }
+        }
+
+        // Remove trailing whitespace before adding ellipsis
+        result = result.trimEnd();
+        result += '...';
+
+        // Close remaining tags in reverse order
+        while (tagStack.length > 0) {
+            const tagName = tagStack.pop();
+            result += `</${tagName}>`;
+        }
+    }
+
+    return result;
+    }

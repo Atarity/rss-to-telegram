@@ -1,5 +1,10 @@
 {
 	"files.associations": {
 		"wrangler.json": "jsonc"
-	}
+	},
+	"spellright.language": [],
+	"spellright.documentTypes": [
+		"latex",
+		"plaintext"
+	]
 }
